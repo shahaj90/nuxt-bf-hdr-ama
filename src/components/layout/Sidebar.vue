@@ -42,15 +42,21 @@
                 </svg>
               </span>
             </a>
-            <div
+            <!-- <div
               v-if="selectedMenu === menu.name"
-              class="absolute right-0 top-1/2 transform -translate-y-1/2 w-1 bg-indigo-500 rounded-l-md h-[50px]"
-            />
+              class="absolute right-0 transform -translate-y-1/2 w-1 bg-indigo-500 rounded-l-md h-[50px]"
+            /> -->
             <ul v-if="menu.subMenu && selectedMenu === menu.name" class="ml-6">
               <li v-for="(subItem, subIndex) in menu.subMenu" :key="subIndex">
-                <a href="#" class="block px-6 py-3 text-gray-700 hover:bg-indigo-100">
-                  {{ subItem }}
-                </a>
+                <NuxtLink
+                  :to="subItem.url"
+                  :class="[
+                    'block px-6 py-3 text-gray-700 hover:bg-indigo-100',
+                    route.path === subItem.url ? 'bg-indigo-100 font-medium text-indigo-600' : '',
+                  ]"
+                >
+                  {{ subItem.label }}
+                </NuxtLink>
               </li>
             </ul>
           </li>
@@ -62,41 +68,48 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 const selectedMenu = ref<string | null>(null);
 
 const menuItems = ref([
+  // {
+  //   name: "utama",
+  //   label: "Utama",
+  //   icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+  //            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
+  //          </svg>`,
+  //   subMenu: null,
+  // },
+  // {
+  //   name: "dashboard",
+  //   label: "Dashboard",
+  //   icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+  //            <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 0 01-2-2v-2z"/>
+  //          </svg>`,
+  //   subMenu: null,
+  // },
   {
-    name: "utama",
-    label: "Utama",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-           </svg>`,
-    subMenu: null,
-  },
-  {
-    name: "dashboard",
-    label: "Dashboard",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-             <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 0 01-2-2v-2z"/>
-           </svg>`,
-    subMenu: null,
-  },
-  {
-    name: "profil",
-    label: "Profil Pembelajaran Dan Peperiksaan",
+    name: "mk-ama",
+    label: "MK-AMA",
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
              <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9zM3 8a2 2 0 012-2h2a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/>
            </svg>`,
-    subMenu: ["Test 1", "Test 2"],
+    subMenu: [
+      { label: "Administrator", url: "/administrator" },
+      { label: "Officer", url: "/officer" },
+      { label: "owner", url: "/owner" },
+    ],
   },
-  {
-    name: "rekod",
-    label: "Rekod dan Peperiksaan",
-    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-             <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
-           </svg>`,
-    subMenu: ["Rekod 1", "Rekod 2"],
-  },
+  // {
+  //   name: "rekod",
+  //   label: "Rekod dan Peperiksaan",
+  //   icon: `<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+  //            <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
+  //          </svg>`,
+  //   subMenu: ["Rekod 1", "Rekod 2"],
+  // },
 ]);
 
 const currentTime = ref("");
