@@ -12,7 +12,7 @@
       <DataGrid
         :key="datagridKey"
         :columns="columns"
-        :records="agencies"
+        :records="records"
         :add-new-button="true"
         :action-button="true"
         @addNew="addNewRecord"
@@ -29,15 +29,17 @@ useHead({
 
 import { useHead } from "nuxt/app";
 import { useI18n } from "vue-i18n";
-import AgencySearchForm from "./components/AgencySearchForm.vue";
 import DataGrid from "./components/DataGrid.vue";
 import { useAgencyStore } from "@/stores/ama/agency";
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
+import type { AgencyList } from "@/types/ama";
+import AgencySearchForm from "./components/AgencySearchForm.vue";
 
 const { t } = useI18n();
 const agencyStore = useAgencyStore();
 const { agencies } = storeToRefs(agencyStore);
+const records = agencies;
 const datagridKey = ref(0);
 
 const searchButtonOptions = {
@@ -60,7 +62,7 @@ const resetButtonOptions = {
   onClick: () => {},
 };
 
-const columns = [
+const columns: AgencyList[] = [
   {
     dataField: "id",
     caption: "Sl",
@@ -71,12 +73,6 @@ const columns = [
     dataField: "name",
     caption: "Name of Determination",
     dataType: "string",
-    filter: {
-      allowSearch: true,
-      searchEditorOptions: {
-        mode: "contains",
-      },
-    },
   },
   {
     dataField: "value",
@@ -91,6 +87,31 @@ const columns = [
   },
 ];
 
+const onSearch = (param: AgencySearchForm) => {
+  if (!param) {
+    agencyStore.getAgency();
+    gridReload();
+    return;
+  }
+
+  const filtered = attendanceRecords.value.filter((record) => {
+    if (status && type) {
+      return (
+        record.status.toLowerCase() === status.toLowerCase() &&
+        record.type.toLowerCase() === type.toLowerCase()
+      );
+    } else if (status) {
+      return record.status.toLowerCase() === status.toLowerCase();
+    } else if (type) {
+      return record.type.toLowerCase() === type.toLowerCase();
+    } else {
+      return false;
+    }
+  });
+
+  attendanceStore.records = filtered;
+};
+
 const addNewRecord = () => {
   agencyStore.setAgency([
     {
@@ -101,6 +122,10 @@ const addNewRecord = () => {
     },
   ]);
 
+  gridReload();
+};
+
+const gridReload = () => {
   datagridKey.value++;
 };
 

@@ -3,6 +3,20 @@ import { defineStore } from "pinia";
 
 export const useAgencyStore = defineStore("agency", {
   state: () => ({
+    agencyList: [
+      {
+        id: 1,
+        name: "Agency 1",
+      },
+      {
+        id: 2,
+        name: "Agency 2",
+      },
+      {
+        id: 3,
+        name: "Agency 3",
+      },
+    ],
     agencies: [
       {
         id: 1,
@@ -25,12 +39,11 @@ export const useAgencyStore = defineStore("agency", {
     ],
   }),
   actions: {
-    setAgency(records: any) {
-      this.agencies.push(...records);
-    },
-
     getAgency() {
       return this.agencies;
+    },
+    setAgency(records: any) {
+      this.agencies.push(...records);
     },
     resetAgency() {
       this.agencies = [];

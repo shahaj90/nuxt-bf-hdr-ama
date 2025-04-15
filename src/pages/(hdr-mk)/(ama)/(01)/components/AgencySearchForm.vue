@@ -18,19 +18,19 @@
         editor-type="dxSelectBox"
         :label="{ text: $t('Agency') }"
         :editor-options="{
-          items: ['', 'Agency1', 'Agency2'],
+          items: agencyList.map((agency) => agency.name),
           stylingMode: 'outlined',
           width: '20em',
         }"
       />
       <DxItem
-        :button-options="searchButtonOptions"
+        :button-options="{ ...searchButtonOptions, onClick: search }"
         item-type="button"
         css-class="mt-6 ml-4"
         horizontal-alignment="right"
       />
       <DxItem
-        :button-options="resetButtonOptions"
+        :button-options="{ ...resetButtonOptions, onClick: reset }"
         item-type="button"
         css-class="mt-6 mr-[-10px]"
         horizontal-alignment="left"
@@ -40,10 +40,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from "vue";
+import { ref } from "vue";
 import { DxForm, DxSimpleItem, DxItem } from "devextreme-vue/form";
 import type { AgencySearchForm } from "@/types/ama";
+import { useAgencyStore } from "@/stores/ama/agency";
+import { storeToRefs } from "pinia";
 
+// Store
+const agencyStore = useAgencyStore();
+const { agencyList } = storeToRefs(agencyStore);
+
+// Props
 defineProps({
   searchButtonOptions: {
     type: Object,
@@ -55,6 +62,7 @@ defineProps({
   },
 });
 
+// Reactive form
 const agencySearchForm = ref<AgencySearchForm>({
   agency: "",
 });
