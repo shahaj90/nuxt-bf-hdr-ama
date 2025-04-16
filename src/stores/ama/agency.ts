@@ -1,4 +1,4 @@
-import type { IAgency, ICompetency } from "@/types/ama";
+import type { IAgency, ICompetency, IForm } from "@/types/ama";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
@@ -19,19 +19,30 @@ export const useAgencyStore = defineStore("agency", () => {
       name: "Agency 3",
     },
   ]);
-
   const divisionList = ref<IAgency[]>([
     {
       id: 1,
-      name: "Division 1",
+      name: "Engineering",
     },
     {
       id: 2,
-      name: "Division 2",
+      name: "Management",
     },
     {
       id: 3,
-      name: "Division 3",
+      name: "Design",
+    },
+    {
+      id: 4,
+      name: "Quality Assurance",
+    },
+    {
+      id: 5,
+      name: "Infrastructure",
+    },
+    {
+      id: 6,
+      name: "Sales",
     },
   ]);
 
@@ -47,9 +58,18 @@ export const useAgencyStore = defineStore("agency", () => {
     records.value.push({ ...record, id: records.value.length + 1 });
   }
 
+  function addCompetencyRecord(record: ICompetency) {
+    competency.value.push({ ...record, id: competency.value.length + 1 });
+  }
+
   function updateRecord(updated: IAgency) {
     const index = records.value.findIndex((r) => r.id === updated.id);
     if (index !== -1) records.value[index] = updated;
+  }
+
+  function updateCompetencyRecord(updated: ICompetency) {
+    const index = competency.value.findIndex((r) => r.id === updated.id);
+    if (index !== -1) competency.value[index] = updated;
   }
 
   function deleteRecord(id: number) {
@@ -64,7 +84,9 @@ export const useAgencyStore = defineStore("agency", () => {
     loadRecords,
     loadCompetency,
     addRecord,
+    addCompetencyRecord,
     updateRecord,
+    updateCompetencyRecord,
     deleteRecord,
   };
 });

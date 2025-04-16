@@ -16,7 +16,7 @@
       <DxSimpleItem
         data-field="division"
         editor-type="dxSelectBox"
-        :label="{ text: $t('Division/Branch/Unit') }"
+        :label="{ text: $t('Division') }"
         :editor-options="{
           items: agencyStore.divisionList.map((item) => item.name),
           stylingMode: 'outlined',

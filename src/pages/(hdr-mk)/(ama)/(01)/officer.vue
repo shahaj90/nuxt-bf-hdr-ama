@@ -25,7 +25,7 @@
     <DxPopup
       v-model:visible="popupVisible"
       :width="700"
-      :height="380"
+      :height="650"
       :show-title="true"
       :drag-enabled="true"
       :close-on-outside-click="true"
@@ -46,22 +46,63 @@
             class="search-form mb-4"
           >
             <DxSimpleItem
-              data-field="name"
+              data-field="owner"
               editor-type="dxTextBox"
-              :label="{ text: 'Name' }"
+              :label="{ text: 'Owner' }"
               :editor-options="{ stylingMode: 'outlined' }"
-              :validation-rules="[{ type: 'required', message: 'Name is required' }]"
+              :validation-rules="[{ type: 'required', message: 'Owner is required' }]"
             />
             <DxSimpleItem
-              data-field="value"
+              data-field="number"
+              editor-type="dxTextBox"
+              :label="{ text: 'Number' }"
+              :validation-rules="[{ type: 'required', message: 'Number is required' }]"
+            />
+            <DxSimpleItem
+              data-field="identity"
+              editor-type="dxTextBox"
+              :label="{ text: 'Identity' }"
+              :validation-rules="[{ type: 'required', message: 'Identity is required' }]"
+            />
+            <DxSimpleItem
+              data-field="position"
+              editor-type="dxTextBox"
+              :label="{ text: 'Position' }"
+              :validation-rules="[{ type: 'required', message: 'Position is required' }]"
+            />
+            <DxSimpleItem
+              data-field="grade"
+              editor-type="dxTextBox"
+              :label="{ text: 'Grade' }"
+              :validation-rules="[{ type: 'required', message: 'Grade is required' }]"
+            />
+            <DxSimpleItem
+              data-field="division"
+              editor-type="dxTextBox"
+              :label="{ text: 'Division' }"
+              :validation-rules="[{ type: 'required', message: 'Division is required' }]"
+            />
+            <DxSimpleItem
+              data-field="startDate"
               editor-type="dxDateBox"
-              :label="{ text: 'Value' }"
+              :label="{ text: 'Start Date' }"
               :editor-options="{
                 type: 'datetime',
                 displayFormat: 'dd/MM/yyyy HH:mm',
                 stylingMode: 'outlined',
               }"
-              :validation-rules="[{ type: 'required', message: 'Value is required' }]"
+              :validation-rules="[{ type: 'required', message: 'Start Date is required' }]"
+            />
+            <DxSimpleItem
+              data-field="expirationDate"
+              editor-type="dxDateBox"
+              :label="{ text: 'Expiration Date' }"
+              :editor-options="{
+                type: 'datetime',
+                displayFormat: 'dd/MM/yyyy HH:mm',
+                stylingMode: 'outlined',
+              }"
+              :validation-rules="[{ type: 'required', message: 'Expiration Date is required' }]"
             />
             <DxSimpleItem
               data-field="status"
@@ -74,6 +115,42 @@
               }"
               :validation-rules="[{ type: 'required', message: 'Status is required' }]"
             />
+            <DxSimpleItem
+              data-field="determinationStatus"
+              editor-type="dxSelectBox"
+              :label="{ text: $t('Determination Status') }"
+              :editor-options="{
+                items: ['Active', 'Inactive'],
+                stylingMode: 'outlined',
+                width: '20em',
+              }"
+              :validation-rules="[
+                { type: 'required', message: 'Determination Status is required' },
+              ]"
+            />
+            <DxSimpleItem
+              data-field="updateDateTime"
+              editor-type="dxDateBox"
+              :label="{ text: 'Update DateTime' }"
+              :editor-options="{
+                type: 'datetime',
+                displayFormat: 'dd/MM/yyyy HH:mm',
+                stylingMode: 'outlined',
+              }"
+              :validation-rules="[{ type: 'required', message: 'Update DateTime is required' }]"
+            />
+            <DxSimpleItem
+              data-field="selfReportingDate"
+              editor-type="dxDateBox"
+              :label="{ text: 'Self Reporting Date' }"
+              :editor-options="{
+                type: 'datetime',
+                displayFormat: 'dd/MM/yyyy HH:mm',
+                stylingMode: 'outlined',
+              }"
+              :validation-rules="[{ type: 'required', message: 'Self Reporting Date is required' }]"
+            />
+
             <DxGroupItem :col-span="2" :col-count="5" />
             <DxItem
               :button-options="saveButtonOptions"
@@ -104,7 +181,7 @@ import { useI18n } from "vue-i18n";
 import { onMounted, ref } from "vue";
 import DataGrid from "./components/DataGrid.vue";
 import { useAgencyStore } from "@/stores/ama/agency";
-import type { ICompetencyList, IDivisionSearchForm, IForm } from "@/types/ama";
+import type { ICompetency, ICompetencyList, IDivisionSearchForm, IForm } from "@/types/ama";
 import { DxPopup } from "devextreme-vue/popup";
 import { DxForm, DxGroupItem, DxItem, DxSimpleItem } from "devextreme-vue/form";
 import notify from "devextreme/ui/notify";
@@ -163,30 +240,88 @@ const columns: ICompetencyList[] = [
 const records = ref([
   {
     id: 1,
-    number: "12345",
-    division: "Division 1",
-    identity: "Value 1",
-    position: "Active",
-    grade: "B",
-    selfReportingDate: new Date(),
+    owner: "John Doe",
+    number: "EMP-1001",
+    identity: "987654321",
+    position: "Software Engineer",
+    grade: "G7",
+    division: "Engineering",
+    startDate: new Date("2023-01-15"),
+    expirationDate: new Date("2025-01-15"),
+    status: "Active",
+    determinationStatus: "Verified",
+    notes: "No issues reported.",
+    documents: "contract.pdf",
+    updateDateTime: new Date("2025-04-01T09:00:00Z"),
+    selfReportingDate: new Date("2025-03-28"),
   },
   {
     id: 2,
-    number: "67890",
-    division: "Division 2",
-    identity: "Value 2",
-    position: "Active",
-    grade: "A+",
-    selfReportingDate: new Date(),
+    owner: "Jane Smith",
+    number: "EMP-1002",
+    identity: "123456789",
+    position: "Project Manager",
+    grade: "G9",
+    division: "Management",
+    startDate: new Date("2022-06-01"),
+    expirationDate: new Date("2024-06-01"),
+    status: "On Leave",
+    determinationStatus: "Pending",
+    notes: "On maternity leave.",
+    documents: "leave_form.pdf",
+    updateDateTime: new Date("2025-04-05T10:30:00Z"),
+    selfReportingDate: new Date("2025-04-01"),
   },
   {
     id: 3,
-    number: "34567",
-    division: "Division 3",
-    identity: "Value 3",
-    position: "Active",
-    grade: "A",
-    selfReportingDate: new Date(),
+    owner: "Ali Khan",
+    number: "EMP-1003",
+    identity: "556677889",
+    position: "UX Designer",
+    grade: "G6",
+    division: "Design",
+    startDate: new Date("2021-09-10"),
+    expirationDate: new Date("2025-09-10"),
+    status: "Active",
+    determinationStatus: "Verified",
+    notes: "Recently promoted.",
+    documents: "promotion_letter.pdf",
+    updateDateTime: new Date("2025-03-30T14:15:00Z"),
+    selfReportingDate: new Date("2025-03-29"),
+  },
+  {
+    id: 4,
+    owner: "Maria Lopez",
+    number: "EMP-1004",
+    identity: "334455667",
+    position: "QA Analyst",
+    grade: "G5",
+    division: "Quality Assurance",
+    startDate: new Date("2020-11-20"),
+    expirationDate: new Date("2024-11-20"),
+    status: "Terminated",
+    determinationStatus: "Rejected",
+    notes: "Contract ended.",
+    documents: "termination_notice.pdf",
+    updateDateTime: new Date("2025-04-10T08:00:00Z"),
+    selfReportingDate: new Date("2025-04-10"),
+  },
+  {
+    id: 5,
+    owner: "David Zhang",
+    number: "EMP-1005",
+    identity: "778899001",
+    position: "DevOps Engineer",
+    grade: "G8",
+    division: "Infrastructure",
+    startDate: new Date("2023-05-05"),
+    expirationDate: new Date("2026-05-05"),
+    status: "Active",
+    determinationStatus: "Verified",
+    notes: "Handles CI/CD pipelines.",
+    documents: "id_card.pdf",
+    updateDateTime: new Date("2025-04-12T16:45:00Z"),
+    selfReportingDate: new Date("2025-04-12"),
   },
 ]);
 
@@ -253,19 +388,42 @@ const closeButtonOptions = {
   },
 };
 
-const form = ref<IForm>({
+const form = ref<ICompetency>({
   id: 0,
-  name: "",
-  value: new Date(),
+  owner: "",
+  number: "",
+  identity: "",
+  position: "",
+  grade: "",
+  division: "",
+  startDate: new Date(),
+  expirationDate: new Date(),
   status: "",
+  determinationStatus: "",
+  notes: "",
+  documents: "",
+  updateDateTime: new Date(),
+  selfReportingDate: new Date(),
 });
 
 const addNewRecord = () => {
   saveButtonOptions.value.text = "Save";
   form.value = {
-    name: "",
-    value: new Date(),
+    id: 0,
+    owner: "",
+    number: "",
+    identity: "",
+    position: "",
+    grade: "",
+    division: "",
+    startDate: new Date(),
+    expirationDate: new Date(),
     status: "",
+    determinationStatus: "",
+    notes: "",
+    documents: "",
+    updateDateTime: new Date(),
+    selfReportingDate: new Date(),
   };
 
   operationType.value = "Add";
@@ -283,25 +441,36 @@ const addRecord = (type: string) => {
 
   const params: IForm = {
     id: type === "Add" ? lastId + 1 : form.value.id,
-    name: form.value.name,
-    value: form.value.value,
+    owner: form.value.owner,
+    number: form.value.number,
+    identity: form.value.identity,
+    position: form.value.position,
+    grade: form.value.grade,
+    division: form.value.division,
+    startDate: form.value.startDate,
+    expirationDate: form.value.expirationDate,
     status: form.value.status,
+    determinationStatus: form.value.determinationStatus,
+    notes: form.value.notes,
+    documents: form.value.documents,
+    updateDateTime: form.value.updateDateTime,
+    selfReportingDate: form.value.selfReportingDate,
   };
 
-  const change: IForm = {
+  const change: ICompetency = {
     ...form.value,
     ...params,
   };
 
   let message = "Setting information save successfully";
   if (type === "Add") {
-    agencyStore.addRecord(change);
+    agencyStore.addCompetencyRecord(change);
   } else {
     message = "Setting information update successfully";
-    agencyStore.updateRecord({ ...change, id: change.id });
+    agencyStore.updateCompetencyRecord({ ...change, id: change.id });
   }
 
-  agencyStore.records = [...agencyStore.records];
+  agencyStore.competency = [...agencyStore.competency];
   popupVisible.value = false;
   notify({
     message: message,
@@ -321,9 +490,20 @@ const onEdit = (record: IForm) => {
   saveButtonOptions.value.text = "Update";
   form.value = {
     id: record.id,
-    name: record.name,
-    value: record.value,
+    owner: record.owner,
+    number: record.number,
+    identity: record.identity,
+    position: record.position,
+    grade: record.grade,
+    division: record.division,
+    startDate: new Date(record.startDate),
+    expirationDate: new Date(record.expirationDate),
     status: record.status,
+    determinationStatus: record.determinationStatus,
+    notes: record.notes,
+    documents: record.documents,
+    updateDateTime: new Date(record.updateDateTime),
+    selfReportingDate: new Date(record.selfReportingDate),
   };
 
   popupVisible.value = true;

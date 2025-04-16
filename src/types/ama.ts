@@ -34,10 +34,19 @@ export interface ICompetencyList {
 
 export interface ICompetency {
   id: number;
+  owner: string;
   number: string;
   identity: string;
   position: string;
   grade: string;
+  division: string;
+  startDate: Date;
+  expirationDate: Date;
+  status: string;
+  determinationStatus: string;
+  notes: string;
+  documents: string;
+  updateDateTime: Date;
   selfReportingDate: Date;
 }
 
