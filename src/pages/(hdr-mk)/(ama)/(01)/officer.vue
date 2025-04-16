@@ -28,7 +28,7 @@
       :height="650"
       :show-title="true"
       :drag-enabled="true"
-      :close-on-outside-click="true"
+      :close-on-outside-click="false"
     >
       <template #default>
         <fieldset

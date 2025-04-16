@@ -7,7 +7,7 @@ export interface IDivisionSearchForm {
 }
 
 export interface IAgency {
-  id: number;
+  id: string;
   name: string;
 }
 

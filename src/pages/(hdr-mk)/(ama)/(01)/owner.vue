@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <!-- Grid -->
+    <!-- Grid for competency owners -->
     <div>
       <h2 class="text-2xl font-semibold mb-4">List of Selected Competency Owners</h2>
       <DataGrid
@@ -8,10 +8,92 @@
         :records="agencyStore.competency"
         :add-new-button="false"
         :action-button="false"
+      />
+    </div>
+
+    <!-- Check in/Check out competency grid -->
+    <div class="mt-10">
+      <h2 class="text-2xl font-semibold mb-4">List of Selected Competency Owners</h2>
+      <DataGrid
+        :columns="ownerColumns"
+        :records="agencyStore.records"
+        :add-new-button="true"
+        :action-button="false"
         @addNew="addNewRecord"
         @onEdit="onEdit"
       />
     </div>
+
+    <!-- Popup -->
+    <dxPopup
+      v-model:visible="popupVisible"
+      :width="700"
+      :height="380"
+      :show-title="true"
+      :drag-enabled="true"
+      :close-on-outside-click="false"
+    >
+      <template #default>
+        <fieldset
+          class="border border-gray-300 rounded-lg p-4 mb-6 relative bg-white w-full max-w-7xl mx-auto"
+        >
+          <legend class="font-semibold text-lg px-2 ml-2"></legend>
+          <DxForm
+            ref="formRef"
+            :form-data="form"
+            label-location="top"
+            :col-count="2"
+            :min-col-width="150"
+            :align-item-labels="true"
+            :show-colon-after-label="true"
+            class="search-form mb-4"
+          >
+            <DxSimpleItem
+              data-field="name"
+              editor-type="dxTextBox"
+              :label="{ text: 'Name' }"
+              :editor-options="{ stylingMode: 'outlined' }"
+              :validation-rules="[{ type: 'required', message: 'Name is required' }]"
+            />
+            <DxSimpleItem
+              data-field="value"
+              editor-type="dxDateBox"
+              :label="{ text: 'Value' }"
+              :editor-options="{
+                type: 'datetime',
+                displayFormat: 'dd/MM/yyyy HH:mm',
+                stylingMode: 'outlined',
+              }"
+              :validation-rules="[{ type: 'required', message: 'Value is required' }]"
+            />
+            <DxSimpleItem
+              data-field="status"
+              editor-type="dxSelectBox"
+              :label="{ text: $t('Status') }"
+              :editor-options="{
+                items: ['Active', 'Inactive'],
+                stylingMode: 'outlined',
+                width: '20em',
+              }"
+              :validation-rules="[{ type: 'required', message: 'Status is required' }]"
+            />
+            <DxGroupItem :col-span="2" :col-count="5" />
+            <DxItem
+              :button-options="saveButtonOptions"
+              item-type="button"
+              css-class="mt-6"
+              horizontal-alignment="right"
+            />
+            <DxItem
+              :button-options="closeButtonOptions"
+              item-type="button"
+              css-class="mt-6"
+              horizontal-alignment="left"
+            />
+          </DxForm>
+        </fieldset>
+      </template>
+    </dxPopup>
   </div>
 </template>
 
@@ -21,14 +103,13 @@ useHead({
 });
 
 import { useHead } from "nuxt/app";
-import { useI18n } from "vue-i18n";
 import { onMounted, ref } from "vue";
 import DataGrid from "./components/DataGrid.vue";
 import { useAgencyStore } from "@/stores/ama/agency";
-import type { ICompetency, ICompetencyList, IDivisionSearchForm, IForm } from "@/types/ama";
+import type { IAgencyList, ICompetencyList, IForm } from "@/types/ama";
 import notify from "devextreme/ui/notify";
 
-const { t } = useI18n();
+// const { t } = useI18n();
 const agencyStore = useAgencyStore();
 const popupVisible = ref(false);
 const operationType = ref("Add");
@@ -36,6 +117,7 @@ const formRef = ref(null);
 
 onMounted(() => {
   agencyStore.loadCompetency(records.value);
+  agencyStore.loadRecords(ownerRecords.value);
 });
 
 const columns: ICompetencyList[] = [
@@ -166,44 +248,51 @@ const records = ref([
   },
 ]);
 
-const searchButtonOptions = {
-  text: t("Search"),
-  useSubmitBehavior: true,
-  type: "default",
-  stylingMode: "contained",
-  icon: "search",
-  class: "mt-4 ml-4",
-  onClick: () => {},
-};
+const ownerColumns: IAgencyList[] = [
+  {
+    dataField: "id",
+    caption: "Sl",
+    dataType: "string",
+    width: 60,
+  },
+  {
+    dataField: "name",
+    caption: "Name of Determination",
+    dataType: "string",
+  },
+  {
+    dataField: "value",
+    caption: "Determination Value",
+    dataType: "datetime",
+    format: { type: "shortDateShortTime" },
+  },
+  {
+    dataField: "status",
+    caption: "Determination Status",
+    dataType: "string",
+  },
+];
 
-const resetButtonOptions = {
-  text: t("Reset"),
-  useSubmitBehavior: true,
-  type: "danger",
-  stylingMode: "contained",
-  icon: "home",
-  class: "mt-4",
-  onClick: () => {},
-};
-
-const onSearch = (divisionSearchForm: IDivisionSearchForm) => {
-  const { division } = divisionSearchForm;
-
-  if (!division) {
-    agencyStore.loadCompetency(records.value);
-    return;
-  }
-
-  const filtered = records.value.filter((record) => {
-    return record.division.toLowerCase() === division.toLowerCase();
-  });
-
-  agencyStore.competency = filtered;
-};
-
-const onReset = () => {
-  agencyStore.loadCompetency(records.value);
-};
+const ownerRecords = ref([
+  {
+    id: 1,
+    name: "Start Date",
+    value: "01/01/2012",
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "End Date",
+    value: "01/01/2026",
+    status: "Active",
+  },
+  {
+    id: 3,
+    name: "Agency 3",
+    value: "Value 3",
+    status: "Active",
+  },
+]);
 
 const saveButtonOptions = ref({
   text: "Save",
@@ -229,42 +318,19 @@ const closeButtonOptions = {
   },
 };
 
-const form = ref<ICompetency>({
+const form = ref<IForm>({
   id: 0,
-  owner: "",
-  number: "",
-  identity: "",
-  position: "",
-  grade: "",
-  division: "",
-  startDate: new Date(),
-  expirationDate: new Date(),
+  name: "",
+  value: new Date(),
   status: "",
-  determinationStatus: "",
-  notes: "",
-  documents: "",
-  updateDateTime: new Date(),
-  selfReportingDate: new Date(),
 });
 
 const addNewRecord = () => {
   saveButtonOptions.value.text = "Save";
   form.value = {
-    id: 0,
-    owner: "",
-    number: "",
-    identity: "",
-    position: "",
-    grade: "",
-    division: "",
-    startDate: new Date(),
-    expirationDate: new Date(),
+    name: "",
+    value: new Date(),
     status: "",
-    determinationStatus: "",
-    notes: "",
-    documents: "",
-    updateDateTime: new Date(),
-    selfReportingDate: new Date(),
   };
 
   operationType.value = "Add";
@@ -282,36 +348,25 @@ const addRecord = (type: string) => {
 
   const params: IForm = {
     id: type === "Add" ? lastId + 1 : form.value.id,
-    owner: form.value.owner,
-    number: form.value.number,
-    identity: form.value.identity,
-    position: form.value.position,
-    grade: form.value.grade,
-    division: form.value.division,
-    startDate: form.value.startDate,
-    expirationDate: form.value.expirationDate,
+    name: form.value.name,
+    value: form.value.value,
     status: form.value.status,
-    determinationStatus: form.value.determinationStatus,
-    notes: form.value.notes,
-    documents: form.value.documents,
-    updateDateTime: form.value.updateDateTime,
-    selfReportingDate: form.value.selfReportingDate,
   };
 
-  const change: ICompetency = {
+  const change: IForm = {
     ...form.value,
     ...params,
   };
 
   let message = "Setting information save successfully";
   if (type === "Add") {
-    agencyStore.addCompetencyRecord(change);
+    agencyStore.addRecord(change);
   } else {
     message = "Setting information update successfully";
-    agencyStore.updateCompetencyRecord({ ...change, id: change.id });
+    agencyStore.updateRecord({ ...change, id: change.id });
   }
 
-  agencyStore.competency = [...agencyStore.competency];
+  agencyStore.records = [...agencyStore.records];
   popupVisible.value = false;
   notify({
     message: message,
@@ -331,20 +386,9 @@ const onEdit = (record: IForm) => {
   saveButtonOptions.value.text = "Update";
   form.value = {
     id: record.id,
-    owner: record.owner,
-    number: record.number,
-    identity: record.identity,
-    position: record.position,
-    grade: record.grade,
-    division: record.division,
-    startDate: new Date(record.startDate),
-    expirationDate: new Date(record.expirationDate),
+    name: record.name,
+    value: record.value,
     status: record.status,
-    determinationStatus: record.determinationStatus,
-    notes: record.notes,
-    documents: record.documents,
-    updateDateTime: new Date(record.updateDateTime),
-    selfReportingDate: new Date(record.selfReportingDate),
   };
 
   popupVisible.value = true;

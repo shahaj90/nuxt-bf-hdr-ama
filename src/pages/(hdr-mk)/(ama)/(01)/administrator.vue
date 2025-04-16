@@ -28,7 +28,7 @@
       :height="380"
       :show-title="true"
       :drag-enabled="true"
-      :close-on-outside-click="true"
+      :close-on-outside-click="false"
     >
       <template #default>
         <fieldset
@@ -272,9 +272,11 @@ const addRecord = (type: string) => {
   let message = "Setting information save successfully";
   if (type === "Add") {
     agencyStore.addRecord(change);
+    agencyStore.setAgencyList({ id: change.id, name: change.name });
   } else {
     message = "Setting information update successfully";
     agencyStore.updateRecord({ ...change, id: change.id });
+    agencyStore.setUpdateAgencyList({ id: change.id, name: change.name });
   }
 
   agencyStore.records = [...agencyStore.records];

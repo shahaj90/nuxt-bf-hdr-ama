@@ -46,6 +46,16 @@ export const useAgencyStore = defineStore("agency", () => {
     },
   ]);
 
+  function setAgencyList(data: IAgency[]) {
+    agencyList.value.push(data);
+  }
+
+  function setUpdateAgencyList(data: IAgency[]) {
+    // agencyList.value.push(data);
+    const index = agencyList.value.findIndex((r) => r.id === data.id);
+    if (index !== -1) agencyList.value[index] = data;
+  }
+
   function loadRecords(data: IAgency[]) {
     records.value = data;
   }
@@ -81,6 +91,8 @@ export const useAgencyStore = defineStore("agency", () => {
     competency,
     agencyList,
     divisionList,
+    setAgencyList,
+    setUpdateAgencyList,
     loadRecords,
     loadCompetency,
     addRecord,
