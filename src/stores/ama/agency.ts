@@ -1,9 +1,10 @@
-import type { IAgency } from "@/types/ama";
+import type { IAgency, ICompetency } from "@/types/ama";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useAgencyStore = defineStore("agency", () => {
   const records = ref<IAgency[]>([]);
+  const competency = ref<ICompetency[]>([]);
   const agencyList = ref<IAgency[]>([
     {
       id: 1,
@@ -19,8 +20,27 @@ export const useAgencyStore = defineStore("agency", () => {
     },
   ]);
 
+  const divisionList = ref<IAgency[]>([
+    {
+      id: 1,
+      name: "Division 1",
+    },
+    {
+      id: 2,
+      name: "Division 2",
+    },
+    {
+      id: 3,
+      name: "Division 3",
+    },
+  ]);
+
   function loadRecords(data: IAgency[]) {
     records.value = data;
+  }
+
+  function loadCompetency(data: ICompetency[]) {
+    competency.value = data;
   }
 
   function addRecord(record: IAgency) {
@@ -36,5 +56,15 @@ export const useAgencyStore = defineStore("agency", () => {
     records.value = records.value.filter((r) => r.id !== id);
   }
 
-  return { records, agencyList, loadRecords, addRecord, updateRecord, deleteRecord };
+  return {
+    records,
+    competency,
+    agencyList,
+    divisionList,
+    loadRecords,
+    loadCompetency,
+    addRecord,
+    updateRecord,
+    deleteRecord,
+  };
 });

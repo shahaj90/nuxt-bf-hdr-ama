@@ -5,7 +5,7 @@
   >
     <legend class="font-semibold text-lg px-2 ml-2">{{ $t("Search Setting") }}</legend>
     <DxForm
-      :form-data="agencySearchForm"
+      :form-data="searchForm"
       label-location="top"
       :col-count="3"
       :min-col-width="200"
@@ -14,11 +14,11 @@
       class="search-form mb-4 ml-[10em]"
     >
       <DxSimpleItem
-        data-field="agency"
+        data-field="division"
         editor-type="dxSelectBox"
-        :label="{ text: $t('Agency') }"
+        :label="{ text: $t('Division/Branch/Unit') }"
         :editor-options="{
-          items: agencyStore.agencyList.map((agency) => agency.name),
+          items: agencyStore.divisionList.map((item) => item.name),
           stylingMode: 'outlined',
           width: '20em',
         }"
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { DxForm, DxSimpleItem, DxItem } from "devextreme-vue/form";
-import type { IAgencySearchForm } from "@/types/ama";
+import type { IDivisionSearchForm } from "@/types/ama";
 import { useAgencyStore } from "@/stores/ama/agency";
 
 // Store
@@ -62,17 +62,17 @@ defineProps({
 
 // Emits
 const emit = defineEmits<{
-  (e: "search", form: IAgencySearchForm): void;
+  (e: "search", form: IDivisionSearchForm): void;
   (e: "reset"): void;
 }>();
 
 // Reactive form
-const agencySearchForm = ref<IAgencySearchForm>({
-  agency: "",
+const searchForm = ref<IDivisionSearchForm>({
+  division: "",
 });
 
 const search = () => {
-  emit("search", agencySearchForm.value);
+  emit("search", searchForm.value);
 };
 
 const reset = () => {

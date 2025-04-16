@@ -2,7 +2,16 @@ export interface IAgencySearchForm {
   agency: string;
 }
 
+export interface IDivisionSearchForm {
+  division: string;
+}
+
 export interface IAgency {
+  id: number;
+  name: string;
+}
+
+export interface IDivision {
   id: number;
   name: string;
 }
@@ -13,6 +22,23 @@ export interface IAgencyList {
   dataType: string;
   format?: { type: string };
   width?: number;
+}
+
+export interface ICompetencyList {
+  dataField: string;
+  caption: string;
+  dataType: string;
+  format?: { type: string };
+  width?: number;
+}
+
+export interface ICompetency {
+  id: number;
+  number: string;
+  identity: string;
+  position: string;
+  grade: string;
+  selfReportingDate: Date;
 }
 
 export interface IForm {
