@@ -18,7 +18,7 @@
         editor-type="dxSelectBox"
         :label="{ text: $t('Agency') }"
         :editor-options="{
-          items: agencyList.map((agency) => agency.name),
+          items: agencyStore.agencyList.map((agency) => agency.name),
           stylingMode: 'outlined',
           width: '20em',
         }"
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { DxForm, DxSimpleItem, DxItem } from "devextreme-vue/form";
-import type { AgencySearchForm } from "@/types/ama";
+import type { IAgencySearchForm } from "@/types/ama";
 import { useAgencyStore } from "@/stores/ama/agency";
 import { storeToRefs } from "pinia";
 
@@ -62,8 +62,22 @@ defineProps({
   },
 });
 
+// Emits
+const emit = defineEmits<{
+  (e: "search", form: IAgencySearchForm): void;
+  (e: "reset"): void;
+}>();
+
 // Reactive form
-const agencySearchForm = ref<AgencySearchForm>({
+const agencySearchForm = ref<IAgencySearchForm>({
   agency: "",
 });
+
+const search = () => {
+  emit("search", agencySearchForm.value);
+};
+
+const reset = () => {
+  emit("reset");
+};
 </script>

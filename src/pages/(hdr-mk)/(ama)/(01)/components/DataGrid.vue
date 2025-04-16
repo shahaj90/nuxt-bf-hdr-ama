@@ -70,7 +70,7 @@ import {
   DxColumn,
   DxFilterRow,
 } from "devextreme-vue/data-grid";
-import type { AgencyList } from "@/types/ama";
+import type { IForm } from "@/types/ama";
 
 defineProps({
   columns: {
@@ -93,7 +93,8 @@ defineProps({
 
 // Define event emitter
 const emit = defineEmits<{
-  (e: "addNew" | "onEdit", record?: AgencyList): void;
+  (e: "addNewRecord"): void;
+  (e: "onEdit", record: IForm): void;
 }>();
 
 const dataGridRef = ref<DxDataGrid | null>(null);
@@ -103,11 +104,11 @@ const actionCellTemplate = (cellElement: HTMLElement, cellInfo: { data: any }): 
   button.className = "dx-button dx-button-normal dx-button-mode-contained dx-button-has-icon";
   button.innerHTML = '<i class="dx-icon dx-icon-edit"></i>';
   button.style.cursor = "pointer";
-  button.onclick = () => onEdit(cellInfo.data);
+  button.onclick = () => edit(cellInfo.data);
   cellElement.appendChild(button);
 };
 
-const onEdit = (record: AgencyList): void => {
+const edit = (record: IForm): void => {
   emit("onEdit", record);
 };
 

@@ -1,53 +1,40 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { IAgency } from "@/types/ama";
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
-export const useAgencyStore = defineStore("agency", {
-  state: () => ({
-    agencyList: [
-      {
-        id: 1,
-        name: "Agency 1",
-      },
-      {
-        id: 2,
-        name: "Agency 2",
-      },
-      {
-        id: 3,
-        name: "Agency 3",
-      },
-    ],
-    agencies: [
-      {
-        id: 1,
-        name: "Agency 1",
-        value: "Value 1",
-        status: "Active",
-      },
-      {
-        id: 2,
-        name: "Agency 2",
-        value: "Value 2",
-        status: "Inactive",
-      },
-      {
-        id: 3,
-        name: "Agency 3",
-        value: "Value 3",
-        status: "Active",
-      },
-    ],
-  }),
-  actions: {
-    getAgency() {
-      return this.agencies;
+export const useAgencyStore = defineStore("agency", () => {
+  const records = ref<IAgency[]>([]);
+  const agencyList = ref<IAgency[]>([
+    {
+      id: 1,
+      name: "Agency 1",
     },
-    setAgency(records: any) {
-      this.agencies.push(...records);
+    {
+      id: 2,
+      name: "Agency 2",
     },
-    resetAgency() {
-      this.agencies = [];
+    {
+      id: 3,
+      name: "Agency 3",
     },
-  },
-  persist: true,
+  ]);
+
+  function loadRecords(data: IAgency[]) {
+    records.value = data;
+  }
+
+  function addRecord(record: IAgency) {
+    records.value.push({ ...record, id: records.value.length + 1 });
+  }
+
+  function updateRecord(updated: IAgency) {
+    const index = records.value.findIndex((r) => r.id === updated.id);
+    if (index !== -1) records.value[index] = updated;
+  }
+
+  function deleteRecord(id: number) {
+    records.value = records.value.filter((r) => r.id !== id);
+  }
+
+  return { records, agencyList, loadRecords, addRecord, updateRecord, deleteRecord };
 });
