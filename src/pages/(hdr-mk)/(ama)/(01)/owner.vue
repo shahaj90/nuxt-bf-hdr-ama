@@ -19,7 +19,7 @@
         :records="agencyStore.records"
         :add-new-button="true"
         :action-button="false"
-        @addNew="addNewRecord"
+        @addNewRecord="addNewRecord"
         @onEdit="onEdit"
       />
     </div>
@@ -48,6 +48,17 @@
             :show-colon-after-label="true"
             class="search-form mb-4"
           >
+            <DxSimpleItem
+              data-field="number"
+              editor-type="dxSelectBox"
+              :label="{ text: $t('Emp Number') }"
+              :editor-options="{
+                items: agencyStore.competency.map((record) => record.number),
+                stylingMode: 'outlined',
+                width: '20em',
+              }"
+              :validation-rules="[{ type: 'required', message: 'Status is required' }]"
+            />
             <DxSimpleItem
               data-field="name"
               editor-type="dxTextBox"
@@ -107,9 +118,10 @@ import { onMounted, ref } from "vue";
 import DataGrid from "./components/DataGrid.vue";
 import { useAgencyStore } from "@/stores/ama/agency";
 import type { IAgencyList, ICompetencyList, IForm } from "@/types/ama";
+import { DxPopup } from "devextreme-vue/popup";
+import { DxForm, DxGroupItem, DxItem, DxSimpleItem } from "devextreme-vue/form";
 import notify from "devextreme/ui/notify";
 
-// const { t } = useI18n();
 const agencyStore = useAgencyStore();
 const popupVisible = ref(false);
 const operationType = ref("Add");
@@ -320,6 +332,7 @@ const closeButtonOptions = {
 
 const form = ref<IForm>({
   id: 0,
+  number: "",
   name: "",
   value: new Date(),
   status: "",
@@ -328,6 +341,7 @@ const form = ref<IForm>({
 const addNewRecord = () => {
   saveButtonOptions.value.text = "Save";
   form.value = {
+    number: "",
     name: "",
     value: new Date(),
     status: "",

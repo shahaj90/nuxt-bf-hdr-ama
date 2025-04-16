@@ -52,6 +52,7 @@ export interface ICompetency {
 
 export interface IForm {
   id: number;
+  number: string;
   name: string;
   value: Date;
   status: string;

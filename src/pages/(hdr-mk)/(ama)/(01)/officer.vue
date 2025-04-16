@@ -16,7 +16,7 @@
         :records="agencyStore.competency"
         :add-new-button="true"
         :action-button="true"
-        @addNew="addNewRecord"
+        @addNewRecord="addNewRecord"
         @onEdit="onEdit"
       />
     </div>

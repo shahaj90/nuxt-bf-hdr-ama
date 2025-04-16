@@ -113,7 +113,7 @@ const edit = (record: IForm): void => {
 };
 
 const addNewRecord = (): void => {
-  emit("addNew");
+  emit("addNewRecord");
 };
 
 const onPrintGrid = () => {
