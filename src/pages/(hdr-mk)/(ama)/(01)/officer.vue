@@ -34,7 +34,7 @@
         <fieldset
           class="border border-gray-300 rounded-lg p-4 mb-6 relative bg-white w-full max-w-7xl mx-auto"
         >
-          <legend class="font-semibold text-lg px-2 ml-2"></legend>
+          <legend class="font-semibold text-lg px-2 ml-2">Competency Owner Information</legend>
           <DxForm
             ref="formRef"
             :form-data="form"
@@ -78,9 +78,13 @@
             />
             <DxSimpleItem
               data-field="division"
-              editor-type="dxTextBox"
-              :label="{ text: 'Division' }"
-              :validation-rules="[{ type: 'required', message: 'Division is required' }]"
+              editor-type="dxSelectBox"
+              :label="{ text: $t('Division') }"
+              :editor-options="{
+                items: agencyStore.divisionList.map((item) => item.name),
+                stylingMode: 'outlined',
+                width: '20em',
+              }"
             />
             <DxSimpleItem
               data-field="startDate"
