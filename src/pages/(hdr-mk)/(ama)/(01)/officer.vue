@@ -185,7 +185,7 @@ import { useI18n } from "vue-i18n";
 import { onMounted, ref } from "vue";
 import DataGrid from "./components/DataGrid.vue";
 import { useAgencyStore } from "@/stores/ama/agency";
-import type { ICompetency, ICompetencyList, IDivisionSearchForm, IForm } from "@/types/ama";
+import type { ICompetency, ICompetencyList, IDivisionSearchForm } from "@/types/ama";
 import { DxPopup } from "devextreme-vue/popup";
 import { DxForm, DxGroupItem, DxItem, DxSimpleItem } from "devextreme-vue/form";
 import notify from "devextreme/ui/notify";
@@ -443,7 +443,7 @@ const addRecord = (type: string) => {
   const lastId =
     agencyStore.records.length > 0 ? agencyStore.records[agencyStore.records.length - 1].id : 0;
 
-  const params: IForm = {
+  const params: ICompetency = {
     id: type === "Add" ? lastId + 1 : form.value.id,
     owner: form.value.owner,
     number: form.value.number,
@@ -489,7 +489,7 @@ const addRecord = (type: string) => {
   });
 };
 
-const onEdit = (record: IForm) => {
+const onEdit = (record: ICompetency) => {
   operationType.value = "Update";
   saveButtonOptions.value.text = "Update";
   form.value = {

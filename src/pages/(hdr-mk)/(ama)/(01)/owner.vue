@@ -13,7 +13,9 @@
 
     <!-- Check in/Check out competency grid -->
     <div class="mt-10">
-      <h2 class="text-2xl font-semibold mb-4">List of Selected Competency Owners</h2>
+      <h2 class="text-2xl font-semibold mb-4">
+        List of Check-In/Out Settings Using Mobile Applications for Competency Owners
+      </h2>
       <DataGrid
         :columns="ownerColumns"
         :records="agencyStore.records"
@@ -268,6 +270,11 @@ const ownerColumns: IAgencyList[] = [
     width: 60,
   },
   {
+    dataField: "number",
+    caption: "Employee Number",
+    dataType: "string",
+  },
+  {
     dataField: "name",
     caption: "Name of Determination",
     dataType: "string",
@@ -288,18 +295,21 @@ const ownerColumns: IAgencyList[] = [
 const ownerRecords = ref([
   {
     id: 1,
+    number: "EMP-1001",
     name: "Start Date",
     value: "01/01/2012",
     status: "Active",
   },
   {
     id: 2,
+    number: "EMP-1002",
     name: "End Date",
     value: "01/01/2026",
     status: "Active",
   },
   {
     id: 3,
+    number: "EMP-1003",
     name: "Agency 3",
     value: "Value 3",
     status: "Active",
