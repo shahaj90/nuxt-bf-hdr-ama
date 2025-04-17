@@ -10,7 +10,7 @@
 
     <!-- Grid -->
     <div>
-      <h2 class="text-2xl font-semibold mb-4">Check-in/Check-out for Agencies</h2>
+      <h2 class="text-2xl font-semibold mb-4">List of Competency Owners</h2>
       <DataGrid
         :columns="columns"
         :records="agencyStore.competency"

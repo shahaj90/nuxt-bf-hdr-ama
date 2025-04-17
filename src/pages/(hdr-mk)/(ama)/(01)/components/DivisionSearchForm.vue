@@ -3,7 +3,7 @@
   <fieldset
     class="border border-gray-300 rounded-lg p-4 mb-6 relative bg-white w-full max-w-3xl mx-auto"
   >
-    <legend class="font-semibold text-lg px-2 ml-2">{{ $t("Search Setting") }}</legend>
+    <legend class="font-semibold text-lg px-2 ml-2">{{ $t("Competency Owner Search") }}</legend>
     <DxForm
       :form-data="searchForm"
       label-location="top"
