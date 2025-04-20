@@ -35,7 +35,7 @@
         editor-type="dxSelectBox"
         :label="{ text: $t('Division') }"
         :editor-options="{
-          items: agencyStore.divisionList.map((item) => item.name),
+          items: kalStore.divisions.map((item) => item),
           stylingMode: 'outlined',
         }"
       />

@@ -1,4 +1,3 @@
-<!-- eslint-disable @typescript-eslint/no-explicit-any -->
 <template>
   <DxDataGrid
     ref="dataGridRef"
@@ -13,8 +12,8 @@
         location="before"
         widget="dxButton"
         :options="{
-          icon: 'add',
-          text: 'Add New',
+          icon: 'edittableheader',
+          text: 'Word Schedule update',
           onClick: addNewRecord,
         }"
       />
@@ -44,6 +43,7 @@
       :data-type="column.dataType"
       :format="column.format"
       v-bind="column.width ? { width: column.width } : {}"
+      :alignment="column.alignment ? column.alignment : 'center'"
     />
     <DxColumn v-if="actionButton" caption="Action" width="80" :cell-template="actionCellTemplate" />
     <DxSelection mode="multiple" show-check-boxes-mode="always" />
@@ -100,12 +100,12 @@ const emit = defineEmits<{
 const dataGridRef = ref<DxDataGrid | null>(null);
 
 const actionCellTemplate = (cellElement: HTMLElement, cellInfo: { data: any }): void => {
-  const button = document.createElement("div");
-  button.className = "dx-button dx-button-normal dx-button-mode-contained dx-button-has-icon";
-  button.innerHTML = '<i class="dx-icon dx-icon-edit"></i>';
-  button.style.cursor = "pointer";
-  button.onclick = () => edit(cellInfo.data);
-  cellElement.appendChild(button);
+  const editButton = document.createElement("div");
+  editButton.className = "dx-button dx-button-normal dx-button-mode-contained dx-button-has-icon";
+  editButton.innerHTML = '<i class="dx-icon dx-icon-eyeopen"></i>';
+  editButton.style.cursor = "pointer";
+  editButton.onclick = () => edit(cellInfo.data);
+  cellElement.appendChild(editButton);
 };
 
 const edit = (record: IForm): void => {
