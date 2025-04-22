@@ -50,7 +50,7 @@
     <DxSearchPanel :visible="true" :width="240" />
     <DxPaging :page-size="10" />
     <DxPager :show-page-size-selector="true" :allowed-page-sizes="[10, 20, 50]" :show-info="true" />
-    <DxFilterRow :visible="true" />
+    <DxHeaderFilter :visible="true" />
   </DxDataGrid>
 </template>
 
@@ -68,7 +68,7 @@ import {
   DxPaging,
   DxPager,
   DxColumn,
-  DxFilterRow,
+  DxHeaderFilter,
 } from "devextreme-vue/data-grid";
 import type { IForm } from "@/types/ama";
 
